@@ -91,6 +91,13 @@ Nothing here is hidden behaviour, but a verification tool executes code, so it i
 
 No network access, no downloads, no credentials, no telemetry, no hooks.
 
+## Privacy
+
+- **OQA collects nothing.** There is no server, no account, no analytics and no telemetry. The author receives no data from anyone who installs it.
+- **Nothing is sent anywhere by the scripts.** They make no network calls. What they read is your repository (through git and the file system) and the output of your own test commands.
+- **What is written stays in your repository**, under `.oqa/`: the test list, specs with the approval you typed, review findings, and evidence lines (a check name, a result with a short reason, a time, a code fingerprint and the commit it was made against). OQA does not read git author names or e-mail addresses, the account name or the machine name. You decide what of `.oqa/` to commit — see the table above.
+- **The review subagents are Claude Code subagents.** When one runs, the code and documents it reads go to the model exactly as in any other Claude Code session, under the terms of your own Claude plan. OQA adds no other recipient.
+
 ## Limits — read before relying on it
 
 **What the method cannot see**
