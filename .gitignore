@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+# OQA's own working state for this repository stays on the machine that produced it
+.oqa/

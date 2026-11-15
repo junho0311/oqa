@@ -1,0 +1,12 @@
+{
+  "name": "oqa",
+  "description": "OQA — evidence-based verification for code changes made with Claude Code.",
+  "owner": { "name": "junho" },
+  "plugins": [
+    {
+      "name": "oqa",
+      "source": "./",
+      "description": "Evidence-based verification for code changes: mutation testing on changed lines, requirement tracing, and a DONE verdict only when fingerprint-matched evidence exists for the current code."
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "name": "oqa",
+  "version": "0.1.0",
+  "description": "Evidence-based verification for code changes: picks the checks a change needs, runs mutation testing on the changed lines, traces requirements to tests, and only says DONE when fingerprint-matched evidence exists for the current code.",
+  "author": { "name": "junho" },
+  "homepage": "https://github.com/junho0311/oqa",
+  "repository": "https://github.com/junho0311/oqa",
+  "license": "MIT",
+  "keywords": ["verification", "mutation-testing", "testing", "code-review", "qa", "python"]
+}
