@@ -4,6 +4,31 @@
 
 A coding agent says "done" from memory. OQA makes it prove it: every check leaves a line of evidence tied to a fingerprint of the code it looked at, and a small core decides `DONE` / `INCOMPLETE` from that evidence alone. Change one line afterwards and the evidence is stale — the verdict goes back to `INCOMPLETE` until the checks run again.
 
+What it looks like when one added line can be broken without any test failing:
+
+```
+- Added lines not confirmed — mutants on them survived: calc.py (1 survived)
+- Mutation (changed lines): generated 2 · run 2 · killed 1 · survived 1 · crashed 0 · gap 0 — test selection hunk level
+
+Core verdict: INCOMPLETE (exit code 1) — verification report: fail · incomplete 1 — survived mutants 1; failed check: Regression Test; failed check: Mutation Test
+```
+
+## Quick start
+
+```
+/plugin marketplace add junho0311/oqa
+/plugin install oqa@oqa
+```
+
+Then, in a Python project under git, ask Claude:
+
+> verify this change with OQA
+
+Claude sets up the test list, writes a short spec with you, runs the checks and reports the verdict. You approve the spec; the scripts decide the rest.
+
+- **Needs:** Python 3.10 or newer and git. Standard library only — nothing is downloaded or installed.
+- **Works on:** Python projects whose tests run from a command line (plain scripts, `unittest`, `pytest`). For other languages only the reviews, the findings ledger and the evidence/verdict layer apply.
+
 ## What it does
 
 - **Picks the checks a change needs.** `core.py plan` reads the working-tree diff and a short spec and lists the checks to run, with the reason for each.
@@ -13,21 +38,9 @@ A coding agent says "done" from memory. OQA makes it prove it: every check leave
 - **A verdict computed from evidence, not from the conversation.** `core.py verdict` matches evidence to the current code fingerprint, checks open findings and the user's approval, and exits 0 only for `DONE`.
 - **First look at an unfamiliar repository.** `baseline.py` ranks files by coverage and by how many sampled mutants the existing tests miss.
 
-## Requirements
+## The loop, by hand
 
-- Python 3.10 or newer and git. Standard library only — nothing is downloaded or installed.
-- The automated checks work on **Python** projects whose tests run from a command line (plain scripts, `unittest`, `pytest`). For other languages only the reviews, the findings ledger and the evidence/verdict layer apply.
-
-## Install
-
-```
-/plugin marketplace add junho0311/oqa
-/plugin install oqa@oqa
-```
-
-Then ask Claude to "verify this change with OQA", or follow the loop below yourself.
-
-## The loop
+The same steps Claude follows, if you want to run them yourself. `<oqa>` is the folder this plugin is installed in.
 
 ```
 python <oqa>/scripts/init.py --repo .                   # once: writes .oqa/tests.json (one entry per test file) and adds lines to .gitignore
@@ -51,16 +64,7 @@ What the last two commands print for a change whose tests pin every changed line
 Core verdict: DONE (exit code 0) — all 3 required check(s) have evidence for the code now (fingerprint 492ffbf87f25)
 ```
 
-and for a change where one added line can be broken without any test failing:
-
-```
-- Added lines not confirmed — mutants on them survived: calc.py (1 survived)
-- Mutation (changed lines): generated 2 · run 2 · killed 1 · survived 1 · crashed 0 · gap 0 — test selection hunk level
-
-Core verdict: INCOMPLETE (exit code 1) — verification report: fail · incomplete 1 — survived mutants 1; failed check: Regression Test; failed check: Mutation Test
-```
-
-`<oqa>` is the folder this plugin is installed in. The skill (`skills/oqa/SKILL.md`) walks Claude through the same steps; `skills/oqa/references/verify.md` documents every check.
+The skill (`skills/oqa/SKILL.md`) walks Claude through these steps; `skills/oqa/references/verify.md` documents every check.
 
 ## What OQA keeps in your repository
 
