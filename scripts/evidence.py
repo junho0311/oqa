@@ -81,13 +81,12 @@ def recorded_fingerprint(spec_text):
 
 
 DEFAULT_FINGERPRINT_TIMEOUT = 60                         # seconds for one git call — with 8 a large repository could never be measured, so every verdict there was UNKNOWN
-FINGERPRINT_TIMEOUT_ENV = "OQA_FINGERPRINT_TIMEOUT"
 
 
 def fingerprint_timeout():
     """Seconds one git call of the fingerprint may take: the environment variable OQA_FINGERPRINT_TIMEOUT, or the default when it is not set or is not a positive number"""
     try:
-        seconds = float(os.environ.get(FINGERPRINT_TIMEOUT_ENV, ""))
+        seconds = float(os.environ.get("OQA_FINGERPRINT_TIMEOUT", ""))     # a number of seconds — the name is written out so it is plain which variable is read
     except ValueError:
         return DEFAULT_FINGERPRINT_TIMEOUT
     return seconds if 0 < seconds < float("inf") else DEFAULT_FINGERPRINT_TIMEOUT
